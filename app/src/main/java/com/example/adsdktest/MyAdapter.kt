@@ -1,11 +1,16 @@
 package com.example.adsdktest
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
+import kotlinx.coroutines.cancel
+import kotlinx.coroutines.coroutineScope
+import kotlin.math.ceil
+import kotlin.math.roundToInt
 
-class MyAdapter: RecyclerView.Adapter<ViewHolder>() {
+class MyAdapter(private val adSDK: AdSDK) : RecyclerView.Adapter<ViewHolder>() {
 
     companion object {
         private const val IS_AD = 0
@@ -13,10 +18,6 @@ class MyAdapter: RecyclerView.Adapter<ViewHolder>() {
     }
 
     private val objects = ArrayList<Any>()
-
-    fun setList(list: List<ItemClass>?) {
-        objects.addAll(list!!)
-    }
 
     fun setObject(data: java.util.ArrayList<Any>) {
         val size = objects.size
@@ -39,9 +40,9 @@ class MyAdapter: RecyclerView.Adapter<ViewHolder>() {
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(objects[position] is AdClass){
+        return if (objects[position] is AdClass) {
             IS_AD
-        }else{
+        } else {
             NOT_Ad
         }
     }
@@ -63,4 +64,12 @@ class MyAdapter: RecyclerView.Adapter<ViewHolder>() {
             ivh.email?.text = itemClass.email
         }
     }
+
+    override fun onViewDetachedFromWindow(holder: ViewHolder) {
+        super.onViewDetachedFromWindow(holder)
+        if (holder is AdViewHolder) {
+            holder.cancel()
+        }
+    }
+
 }

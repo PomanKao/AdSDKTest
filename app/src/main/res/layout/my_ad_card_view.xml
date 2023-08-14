@@ -16,10 +16,5 @@
         android:textSize="20sp"
         android:gravity="center"/>
 
-<!--    <com.example.adsdktest.TemplateView-->
-<!--        android:id="@+id/id_ad_template_view"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        app:gnt_template_type="@layout/gnt_small_template_view" />-->
 
 </androidx.cardview.widget.CardView>

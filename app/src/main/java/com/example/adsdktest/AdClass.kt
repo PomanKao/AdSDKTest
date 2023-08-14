@@ -1,31 +1,43 @@
 package com.example.adsdktest
 
-import android.content.res.Resources
-import android.graphics.Rect
 import android.util.Log
 import android.view.View
 import android.widget.TextView
-import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.isActive
+import kotlinx.coroutines.launch
 
-class AdClass(private val recyclerView: RecyclerView?) {
+class AdClass(
+    private val scope: CoroutineScope
 
-    private val adRect = Rect()
+) {
+    private var timerJob: Job? =  null
+    private val lastTime by lazy { System.currentTimeMillis() }
+
+
+    fun startTimer(itemView: View) {
+        if(timerJob != null) return
+        timerJob = scope.launch {
+            while (isActive) {
+                val tvAd = itemView.findViewById<TextView>(R.id.tv_ad)
+                Log.d("Poman", "startTimer ${tvAd.text} ${System.currentTimeMillis() - lastTime}")
+                delay(500L)
+            }
+        }
+    }
 
     fun setView(itemView: View, bindingAdapterPosition: Int) {
         val tvAd = itemView.findViewById<TextView>(R.id.tv_ad)
         tvAd.text = "I'm Ad. id = $bindingAdapterPosition"
 
-        recyclerView?.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                itemView.getGlobalVisibleRect(adRect)
+        startTimer(itemView)
+    }
 
-                val screenHeight = Resources.getSystem().displayMetrics.heightPixels
-                Log.d("Poman", "$bindingAdapterPosition screenHeight $screenHeight")
-                Log.d("Poman", "$bindingAdapterPosition top ${adRect.top}, bottom ${adRect.bottom}")
-
-                Log.d("Poman", "$bindingAdapterPosition is on screen ${adRect.top > 0 && adRect.bottom < screenHeight}")
-            }
-        })
+    fun cancel() {
+        timerJob?.cancel()
+        timerJob = null
     }
 
 }
