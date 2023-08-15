@@ -30,10 +30,13 @@ class AdClass(
     }
 
     fun setView(itemView: View, bindingAdapterPosition: Int) {
-        if (tvAd == null) {
+        val rootView = (itemView.rootView as ViewGroup)
+        val view = rootView.getChildAt(0)
+        if (view !is TextView) {
             tvAd = TextView(itemView.context)
-            val rootView = (itemView.rootView as ViewGroup)
             rootView.addView(tvAd)
+        } else {
+            tvAd = view
         }
         tvAd?.text = "I'm Ad. id = $bindingAdapterPosition"
 
