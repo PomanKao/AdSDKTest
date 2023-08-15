@@ -1,16 +1,13 @@
 package com.example.adsdktest
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import kotlinx.coroutines.cancel
-import kotlinx.coroutines.coroutineScope
-import kotlin.math.ceil
-import kotlin.math.roundToInt
+import com.example.admodule.AdClass
+import com.example.admodule.AdViewHolder
 
-class MyAdapter(private val adSDK: AdSDK) : RecyclerView.Adapter<ViewHolder>() {
+class MyAdapter : RecyclerView.Adapter<ViewHolder>() {
 
     companion object {
         private const val IS_AD = 0
@@ -55,7 +52,7 @@ class MyAdapter(private val adSDK: AdSDK) : RecyclerView.Adapter<ViewHolder>() {
         if (getItemViewType(position) == IS_AD) {
             val adv = holder as AdViewHolder
             val adClass = objects[position] as AdClass
-            adv.setAdClass(adClass)
+            adv.setAdClass(adClass, position)
         } else {
             val itemClass = objects[position] as ItemClass
             val ivh = holder as ItemViewHolder

@@ -1,21 +1,19 @@
-package com.example.adsdktest
+package com.example.admodule
 
 import android.view.View
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import kotlinx.coroutines.coroutineScope
 
 class AdViewHolder(itemView: View) : ViewHolder(itemView) {
 
     private lateinit var adClass: AdClass
 
-    fun startTimer(itemView: View) {
-        adClass.startTimer(itemView)
+    fun startTimer() {
+        adClass.startTimer()
     }
 
-    fun setAdClass(adClass: AdClass) {
+    fun setAdClass(adClass: AdClass, position: Int) {
         this.adClass = adClass
-        adClass.setView(itemView, bindingAdapterPosition)
+        adClass.setView(itemView, position)
     }
 
     fun cancel() {

@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.admodule.AdSDK
 import com.example.adsdktest.databinding.ActivityMainBinding
 
 
@@ -45,7 +46,7 @@ class MainActivity : AppCompatActivity() {
 
         val adSDK = AdSDK.getInstance(binding.recyclerView)
         adSDK.setAdDelta(3)
-        myAdapter = MyAdapter(adSDK)
+        myAdapter = MyAdapter()
 
         recyclerView?.adapter = myAdapter
 

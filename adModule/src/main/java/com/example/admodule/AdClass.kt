@@ -1,7 +1,8 @@
-package com.example.adsdktest
+package com.example.admodule
 
 import android.util.Log
 import android.view.View
+import android.view.ViewGroup
 import android.widget.TextView
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
@@ -15,24 +16,28 @@ class AdClass(
 ) {
     private var timerJob: Job? =  null
     private val lastTime by lazy { System.currentTimeMillis() }
+    private var tvAd: TextView? = null
 
 
-    fun startTimer(itemView: View) {
+    fun startTimer() {
         if(timerJob != null) return
         timerJob = scope.launch {
             while (isActive) {
-                val tvAd = itemView.findViewById<TextView>(R.id.tv_ad)
-                Log.d("Poman", "startTimer ${tvAd.text} ${System.currentTimeMillis() - lastTime}")
+                Log.d("Poman", "startTimer ${tvAd?.text} ${System.currentTimeMillis() - lastTime}")
                 delay(500L)
             }
         }
     }
 
     fun setView(itemView: View, bindingAdapterPosition: Int) {
-        val tvAd = itemView.findViewById<TextView>(R.id.tv_ad)
-        tvAd.text = "I'm Ad. id = $bindingAdapterPosition"
+        if (tvAd == null) {
+            tvAd = TextView(itemView.context)
+            val rootView = (itemView.rootView as ViewGroup)
+            rootView.addView(tvAd)
+        }
+        tvAd?.text = "I'm Ad. id = $bindingAdapterPosition"
 
-        startTimer(itemView)
+        startTimer()
     }
 
     fun cancel() {
